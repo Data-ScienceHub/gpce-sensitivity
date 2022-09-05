@@ -2,6 +2,8 @@ best_predictions_case_death.csv
 predictions_case_death.csv
 Total.csv
 
+attention.csv
+attention_mean.csv
 lightning_logs
 
 # Byte-compiled / optimized / DLL files
