@@ -3,24 +3,23 @@
 This folder contains the `Temporal Fushion Transformer` implemented in [`PytorchForecasting`](https://pytorch-forecasting.readthedocs.io/en/stable/api/pytorch_forecasting.models.temporal_fusion_transformer.TemporalFusionTransformer.html) framework. It supports dual prediction (case and death). However, the framework is generic, so both single and multiple outputs are easy to implement.
 
 ## Folder structure
-
-* Class
-  * DataMerger
-  * Parameters
-  * PlotConfig
-  * Plotter
-  * PredictionProcessor
-
-* configurations: folder to save some common configurations.
-* output
+* **2022_May_cleaned**: Contains the merged feature files from raw dataset, which can be directly fed into the models. The `Total.csv` file isn't commited due to size limit. But can be reproduced locally using the [prepare_data.py](script/prepare_data.py). It also contains merged features for top 100 and 500 counties, which can be used for a quick run of the experiment.
+* **Class**
+  * `DataMerger.py`
+  * `Parameters.py`
+  * `PlotConfig.py`
+  * `Plotter.py`
+  * `PredictionProcessor.py`
+* **configurations**: Configurations of the TFT model and data preprocessing saved in json format. They are used to reproduce the experiments.
+* **results**: Results on the primary split using 3,142 US counties. For TFT it contains the final and best checkpoint, figures plotted using the results from the best validated model.
   * checkpoints
     * epoch=X-step=X.ckpt: model checkpointed by best validation loss.
     * model.ckpt: final model saved after finishing traning.
   * figures: saves the figures plotted by the final model obtained after finishing the training.
   * figures_best: figures plotted using the model with best validation loss. Used for the paper results.
   * lightning_logs: This folder is used by tensorboard to log the training and validation visualization. Not commited in git. You can point this folder by clicking the line before `import tensorboard as tb` in the training code (both script and notebook), that says `launch tensorboard session`. VSCode will automatically suggest the extensions needed for it. It can also run from cmd line, using `tensorboard --logdir=lightning_logs`, then it'll show something like `TensorBoard 2.9.0 at http://localhost:6006/ (Press CTRL+C to quit)`. Copy paste the URL in your local browser. To save the images, check `show data download links in the top left`.
-  
-* script: Contains scripts for submitting batch jobs. For details on how to use then, check the readme inside the folder.
+* **results_split**: Results on the additonal splits using 3,142 US counties. Split 1, 2, 3 are respectively rising, falling and post 3rd wave splits.
+* **script**: Contains scripts for submitting batch jobs. For details on how to use then, check the [README.md](script/README.md) inside the folder.
   * `prepare_data.py`: Prepare merged data from raw feature files.
   * `train.py`: Train model on merged data, then interpret using the best model by validation loss.
   * `inference.py`: Inference from a saved checkpoint.
