@@ -75,7 +75,6 @@ class args:
     # if you want to change some config, but not to create a new config file, just change the value
     # of the corresponding parameter in the config section
     configPath = '../configurations/total_target_cleaned_scaled.json'
-    # configPath = '../config_2022_Aug.json'
 
     # Path/URL of the checkpoint from which training is resumed
     ckpt_model_path = None # os.path.join(checkpoint_folder, 'latest-epoch=7.ckpt')
@@ -85,7 +84,7 @@ class args:
 
     # interpret_output has high memory requirement
     # results in out-of-memery for Total.csv. Set to true if it doesn't
-    interpret_train = 'Total.csv' not in input_filePath
+    interpret_train = True # 'Total.csv' not in input_filePath
 
 # %%
 total_data = pd.read_csv(args.input_filePath)
@@ -179,7 +178,6 @@ def prepare_data(data: pd.DataFrame, pm: Parameters, train=False):
     max_encoder_length=max_encoder_length,
     max_prediction_length=max_prediction_length,
     static_reals=pm.data.static_features,
-    # static_categoricals=['FIPS'],
     time_varying_known_reals = pm.data.time_varying_known_features,
     time_varying_unknown_reals = pm.data.time_varying_unknown_features,
     target_normalizer = MultiNormalizer(
@@ -342,21 +340,6 @@ show_result(train_result_merged, targets)
 plotter.summed_plot(train_result_merged, type='Train')
 plotter.summed_plot(train_result_merged, type='Train_error', plot_error=True)
 gc.collect()
-
-# %%
-# predicted_columns = [f'Predicted_{target}' for target in targets]
-# temp = train_result_merged.copy()
-# if target_scaler is not None:
-#     temp.loc[:, predicted_columns] = target_scaler.transform(temp[predicted_columns])
-#     temp.loc[:, targets] = target_scaler.transform(temp[targets])
-# else:
-#     scaler = MinMaxScaler()
-#     temp.loc[:, targets] = scaler.fit_transform(temp[targets])
-#     temp.loc[:, predicted_columns] = scaler.transform(temp[predicted_columns])
-    
-# show_result(temp, targets)
-# plotter.summed_plot(temp, type='Train_scaled')
-# del temp
 
 # %% [markdown]
 # ### By future days
